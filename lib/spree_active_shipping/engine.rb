@@ -21,7 +21,7 @@ module SpreeActiveShippingExtension
       ActiveMerchant::Shipping::UPS.send(:include, Spree::ActiveShipping::UpsOverride)
 
       # Fix Canada Post "Ready to ship" package
-      ActiveMerchant::Shipping::CanadaPost.send(:include, Spree::ActiveShipping::CanadaPostOverride)
+      ActiveMerchant::Shipping::CanadaPostPWS.send(:include, Spree::ActiveShipping::CanadaPostOverride)
     end
 
     config.autoload_paths += %W(#{config.root}/lib)
@@ -33,10 +33,10 @@ module SpreeActiveShippingExtension
       end
 
       app.config.spree.calculators.shipping_methods.concat(
-        Spree::Calculator::Shipping::Fedex::Base.descendants +
         Spree::Calculator::Shipping::CanadaPost::Base.descendants +
         Spree::Calculator::Shipping::Ups::Base.descendants +
-        Spree::Calculator::Shipping::Usps::Base.descendants
+        Spree::Calculator::Shipping::Fedex::Base.descendants
+        # Spree::Calculator::Shipping::Usps::Base.descendants
       )
     end
 

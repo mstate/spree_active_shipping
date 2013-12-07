@@ -7,6 +7,7 @@ module Spree
       def self.included(base)
 
         base.class_eval do
+          cattr_accessor :name
 
           # <!-- List of items in the shopping    -->
           # <!-- cart                             -->
@@ -39,6 +40,23 @@ module Spree
             
             xml_line_items
           end
+
+          def self.default_location
+            {
+              :country     => 'CA',
+              :province    => 'ON',
+              :city        => 'Ottawa',
+              :address1    => '61A York St',
+              :postal_code => 'K1N5T2'
+            }
+          end
+          def sanitize_zip(hash)
+            [:postal_code, :zip].each do |attr|
+              hash[attr] = hash[attr].gsub(/\s+/,'').gsub(/\-/,'').upcase if hash[attr]
+            end
+            hash
+          end
+
         end
       end
     end

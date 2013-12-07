@@ -34,10 +34,10 @@ module Spree
           destination = build_location(order.ship_address)
 
           rates_result = retrieve_rates_from_cache(package, origin, destination)
-
           return nil if rates_result.kind_of?(Spree::ShippingError)
           return nil if rates_result.empty?
-          rate = rates_result[self.class.description]
+
+          rate = rates_result[(self.class.respond_to?(:service_code) ? self.class.service_code : self.class.description)]
 
           return nil unless rate
           rate = rate.to_f + (Spree::ActiveShipping::Config[:handling_fee].to_f || 0.0)
@@ -93,7 +93,7 @@ module Spree
 
         def retrieve_rates(origin, destination, shipment_packages)
           begin
-            response = carrier.find_rates(origin, destination, shipment_packages)
+            response = carrier.find_rates(origin, destination, shipment_packages, carrier_details, shipment_packages.first)
             # turn this beastly array into a nice little hash
             rates = response.rates.collect do |rate|
               service_name = rate.service_name.encode("UTF-8")
@@ -128,7 +128,7 @@ module Spree
         def retrieve_timings(origin, destination, packages)
           begin
             if carrier.respond_to?(:find_time_in_transit)
-              response = carrier.find_time_in_transit(origin, destination, packages)
+              response = carrier.find_time_in_transit(origin, destination, packages, carrier_details)
               return response
             end
           rescue ActiveMerchant::Shipping::ResponseError => re
@@ -217,27 +217,41 @@ module Spree
           weights = convert_package_to_weights_array(package)
           max_weight = get_max_weight(package)
           item_specific_packages = convert_package_to_item_packages_array(package)
-
           if max_weight <= 0
-            packages << Package.new(weights.sum, [], :units => units)
+            packages << Package.new(weights.sum, approximate_dimensions(weights.sum), :units => units)
           else
             package_weight = 0
             weights.each do |content_weight|
               if package_weight + content_weight <= max_weight
                 package_weight += content_weight
               else
-                packages << Package.new(package_weight, [], :units => units)
+                packages << Package.new(package_weight, approximate_dimensions(package_weight), :units => units)
                 package_weight = content_weight
               end
             end
-            packages << Package.new(package_weight, [], :units => units) if package_weight > 0
+            packages << Package.new(package_weight, approximate_dimensions(package_weight), :units => units) if package_weight > 0
           end
 
           item_specific_packages.each do |package|
             packages << Package.new(package.at(0), [package.at(1), package.at(2), package.at(3)], :units => :imperial)
           end
-
           packages
+        end
+
+        def approximate_dimensions(weight)
+          weight = weight.to_i
+          case
+            when weight <= 105 # 00 envelope
+              [25,13,3]
+            when weight <= 210 # 0 envelope
+              [25,15,3]
+            when weight <= 420 # 1 envelope
+              [30,18,4]
+            when weight <= 520 # 2 envelope
+              [30,22,4]
+            else # some big box
+              [25,25,25]
+          end
         end
 
         def get_max_weight(package)
@@ -273,6 +287,7 @@ module Spree
         end
 
         def retrieve_rates_from_cache package, origin, destination
+          # Rails.cache.delete(cache_key(package))
           Rails.cache.fetch(cache_key(package)) do
             shipment_packages = packages(package)
             if shipment_packages.empty?

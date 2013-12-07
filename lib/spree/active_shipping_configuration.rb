@@ -12,15 +12,21 @@ class Spree::ActiveShippingConfiguration < Spree::Preferences::Configuration
 
   preference :usps_login, :string, :default => "aunt_judy"
 
-  preference :canada_post_login, :string, :default => "canada_post_login"
+  preference :canada_post_key, :string, :default => "canada_post_key"
+  preference :canada_post_key_password, :string, :default => "canada_post_key_password"
+  preference :canada_post_customer_number, :string
+  preference :canada_post_contract_number, :string
 
-  preference :origin_country, :string, :default => "US"
-  preference :origin_state, :string, :default => "PA"
-  preference :origin_city, :string, :default => "University Park"
-  preference :origin_zip, :string, :default => "16802"
+  preference :origin_sender, :string, :default => "Your Company Name"
+  preference :origin_address1, :string, :default => "123 My Street"
+  preference :origin_address2, :string
+  preference :origin_state, :string, :default => "ON"
+  preference :origin_city, :string, :default => "Concord"
+  preference :origin_zip, :string, :default => "L4K1G6"
+  preference :origin_country, :string, :default => "CA"
 
-  preference :units, :string, :default => "imperial"
-  preference :unit_multiplier, :integer, :default => 16 # 16 oz./lb - assumes variant weights are in lbs
+  preference :units, :string, :default => "metric"
+  preference :unit_multiplier, :integer, :default => 0 # 16 oz./lb - assumes variant weights are in lbs
   preference :default_weight, :integer, :default => 0 # 16 oz./lb - assumes variant weights are in lbs
   preference :handling_fee, :integer
   preference :max_weight_per_package, :integer, :default => 0 # 0 means no limit
