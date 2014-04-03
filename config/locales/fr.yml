@@ -9,4 +9,5 @@ fr:
     small_packets_air: "Postes Canada Petits Colis - Air"
     parcel_surface: "Postes Canada Colis Postaux - Surface"
     small_packets_surface: "Postes Canada Petits Colis - Surface"
+    free_shipping: "Livraison Gratuite"
   shipping_error: "Erreur de livraison"
