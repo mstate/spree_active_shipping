@@ -21,7 +21,7 @@ module Spree
         def compute_package(package)
           order = package.order
           destination = build_location(order.ship_address)
-          return nil if !self.preferred_exclude_zip_containing.blank? && !(destination.zip =~ /#{self.preferred_exclude_zip_containing}/)
+          return nil if !self.preferred_exclude_zip_containing.blank? && (destination.zip =~ /#{self.preferred_exclude_zip_containing}/)
           return nil if order.item_total < self.preferred_minimal_amount.to_f
           return 0.0
         end
