@@ -1,7 +1,7 @@
 module Spree
   module Calculator::Shipping
     module CanadaPost
-      class FreeShipping #< Spree::Calculator::Shipping::CanadaPost::Base
+      class FreeShipping < Spree::Calculator #< Spree::Calculator::Shipping::CanadaPost::Base
         preference :minimal_amount, :decimal, default: 100
         preference :exclude_zip_containing, :decimal, default: 100
 
@@ -21,8 +21,8 @@ module Spree
         def compute_package(package)
           order = package.order
           destination = build_location(order.ship_address)
-          return nil if !Spree::ActiveShipping::Config[:exclude_postal_codes_containing.blank? && !(destination.zip =~ /#{Spree::ActiveShipping::Config[:exclude_postal_codes_containing]}/)
-          return nil if order.total >= Spree::ActiveShipping::Config[:minimum_value_for_free_shipping].to_f
+          return nil if !self.preferred_exclude_zip_containing.blank? && !(destination.zip =~ /#{self.preferred_exclude_zip_containing}/)
+          return nil if order.total >= self.preferred_minimal_amount.to_f
           return 0.0
         end
 
