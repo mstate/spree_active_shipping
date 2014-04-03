@@ -1,7 +1,7 @@
 module Spree
   module Calculator::Shipping
     module CanadaPost
-      class FreeShipping < Spree::Calculator #< Spree::Calculator::Shipping::CanadaPost::Base
+      class FreeShipping < Spree::Calculator::Shipping::ActiveShipping::Base
         preference :minimal_amount, :decimal, default: 100
         preference :exclude_zip_containing, :decimal, default: 100
 
