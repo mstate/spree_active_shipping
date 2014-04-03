@@ -6,7 +6,7 @@ module Spree
         preference :maximum_shipping_cost, :decimal, :default => 14
 
         def self.description
-          I18n.t("canada_post.free_shipping")
+          I18n.t("canada_post.free_expedited_shipping")
         end
 
         def self.service_code

@@ -59,6 +59,7 @@ en:
     parcel_surface: "Canada Post Parcel Surface"
     small_packets_surface: "Canada Post Small Packets Surface"
     free_shipping: "Free Shipping"
+    free_expedited_shipping: "Free Expedited Shipping"
   shipping_error: "Shipping Error"
   spree:
     product_packages: "Product Packages"

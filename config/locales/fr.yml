@@ -10,4 +10,5 @@ fr:
     parcel_surface: "Postes Canada Colis Postaux - Surface"
     small_packets_surface: "Postes Canada Petits Colis - Surface"
     free_shipping: "Livraison Gratuite"
+    free_expedited_shipping: "Livraison Accélérés Gratuite"
   shipping_error: "Erreur de livraison"
