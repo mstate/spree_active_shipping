@@ -2,8 +2,8 @@ module Spree
   module Calculator::Shipping
     module CanadaPost
       class FreeShipping < Spree::Calculator::Shipping::CanadaPost::Base
-        preference :exclude_zip_containing, :string
         preference :minimal_amount, :decimal, :default => 100
+        preference :exclude_zip_containing, :string
 
         def self.description
           I18n.t("canada_post.free_shipping")
