@@ -12,11 +12,11 @@ class Spree::ActiveShippingConfiguration < Spree::Preferences::Configuration
 
   preference :usps_login, :string, :default => "aunt_judy"
 
+  preference :canada_post_handling_fee_cents, :integer
   preference :canada_post_key, :string, :default => "canada_post_key"
   preference :canada_post_key_password, :string, :default => "canada_post_key_password"
   preference :canada_post_customer_number, :string
   preference :canada_post_contract_number, :string
-  preference :canada_post_handling_fee_cents, :integer
 
   preference :origin_sender, :string, :default => "Your Company Name"
   preference :origin_address1, :string, :default => "123 My Street"
