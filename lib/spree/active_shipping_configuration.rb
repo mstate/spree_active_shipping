@@ -16,6 +16,7 @@ class Spree::ActiveShippingConfiguration < Spree::Preferences::Configuration
   preference :canada_post_key_password, :string, :default => "canada_post_key_password"
   preference :canada_post_customer_number, :string
   preference :canada_post_contract_number, :string
+  preference :canada_post_handling_fee_cents, :integer
 
   preference :origin_sender, :string, :default => "Your Company Name"
   preference :origin_address1, :string, :default => "123 My Street"

@@ -27,7 +27,7 @@ module Spree
             # turn this beastly array into a nice little hash
             rates = response.rates.collect do |rate|
               service_code = rate.service_code
-              [service_code, rate.price]
+              [service_code, rate.price + Spree::ActiveShipping::Config[:canada_post_handling_fee_cents].to_i.to_f]
             end
             rate_hash = Hash[*rates.flatten]
             return rate_hash
