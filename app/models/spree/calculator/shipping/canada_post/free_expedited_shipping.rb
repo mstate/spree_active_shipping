@@ -22,8 +22,12 @@ module Spree
           order = package.order
           destination = build_location(order.ship_address)
           return nil if order.item_total < self.preferred_minimum_line_item_total_amount.to_f
-          return nil if !self.preferred_maximum_shipping_cost.blank? && 
-            Spree::Calculator::Shipping::CanadaPost::Expedited.new.compute_package(package) > self.preferred_maximum_shipping_cost
+          begin
+            return nil if !self.preferred_maximum_shipping_cost.blank? && 
+              Spree::Calculator::Shipping::CanadaPost::Expedited.new.compute_package(package) > self.preferred_maximum_shipping_cost
+          rescue => error
+            return nil
+          end
           return 0.0
         end
 
